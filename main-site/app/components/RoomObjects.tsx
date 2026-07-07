@@ -124,9 +124,6 @@ export function IPad({ active, selectedMemory, onActivate }: IPadProps) {
             className="h-full w-full object-contain p-3"
           />
         )}
-        <span className="absolute bottom-2 right-2 rounded-sm bg-[#17110d] px-2 py-1 text-[10px] uppercase tracking-[0.18em] text-[#e5b85d]">
-          pad
-        </span>
       </span>
     </button>
   );

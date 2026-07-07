@@ -2,7 +2,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { folderNames } from "../data/memories";
 import { formatDate } from "../engine/memoryQuery";
-import type { FolderName, MemoryObject } from "../types/memory";
+import type { FileIcon, FolderName, MemoryObject } from "../types/memory";
 
 type BootState = "off" | "booting" | "login" | "desktop";
 
@@ -19,10 +19,7 @@ type ComputerOSProps = {
 const desktopWallpaper =
   "radial-gradient(circle at 15% 10%, rgba(229,184,88,0.24), transparent 36%), linear-gradient(135deg, #111922, #07090d 68%)";
 
-const fileTypeStyles: Record<
-  MemoryObject["icon"],
-  { bg: string; label: string; mark: string }
-> = {
+const fileTypeStyles: Record<FileIcon, { bg: string; label: string; mark: string }> = {
   APP: { bg: "bg-[#e5b85d]", label: "text-[#f5d182]", mark: "APP" },
   AUD: { bg: "bg-[#4fd1c5]", label: "text-[#b7fff7]", mark: "AUD" },
   DOC: { bg: "bg-[#f0eee4]", label: "text-[#f8f2e7]", mark: "DOC" },
