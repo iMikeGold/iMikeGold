@@ -19,6 +19,18 @@ type ComputerOSProps = {
 const desktopWallpaper =
   "radial-gradient(circle at 15% 10%, rgba(229,184,88,0.24), transparent 36%), linear-gradient(135deg, #111922, #07090d 68%)";
 
+const fileTypeStyles: Record<
+  MemoryObject["icon"],
+  { bg: string; label: string; mark: string }
+> = {
+  APP: { bg: "bg-[#e5b85d]", label: "text-[#f5d182]", mark: "APP" },
+  AUD: { bg: "bg-[#4fd1c5]", label: "text-[#b7fff7]", mark: "AUD" },
+  DOC: { bg: "bg-[#f0eee4]", label: "text-[#f8f2e7]", mark: "DOC" },
+  PIN: { bg: "bg-[#f97316]", label: "text-[#fed7aa]", mark: "PIN" },
+  TXT: { bg: "bg-[#c4b5fd]", label: "text-[#ede9fe]", mark: "TXT" },
+  VID: { bg: "bg-[#fb7185]", label: "text-[#ffe4e6]", mark: "VID" },
+};
+
 export function ComputerOS({
   activeFolder,
   folderMemories,
@@ -133,60 +145,75 @@ export function ComputerOS({
         </label>
       </div>
 
-      <div
-        className="grid min-h-0 flex-1 grid-cols-[92px_1fr] sm:grid-cols-[124px_1fr]"
-        style={{ background: desktopWallpaper }}
-      >
-        <nav className="grid content-start gap-1 overflow-y-auto border-r border-[#f1cf8a]/15 p-2 sm:gap-2 sm:p-3">
-          {folderNames.map((folder) => (
-            <button
-              key={folder}
-              className={`flex h-[32px] flex-col items-center justify-center rounded-sm border px-1 text-center text-[9px] transition sm:h-[48px] sm:text-[10px] ${
-                folder === activeFolder
-                  ? "border-[#e5b85d] bg-[#e5b85d]/20 text-[#f5d182]"
-                  : "border-white/10 bg-black/20 text-[#d7c5a3] hover:border-[#f1cf8a]/35"
-              }`}
-              onClick={() => onFolderSelect(folder)}
-            >
-              <span className="text-[11px] leading-none sm:text-base">▣</span>
-              <span className="truncate">{folder}</span>
-            </button>
-          ))}
-        </nav>
+      <div className="min-h-0 flex-1" style={{ background: desktopWallpaper }}>
+        <div className="grid h-full min-h-0 grid-rows-[auto_1fr_minmax(48px,72px)] gap-2 p-2 sm:gap-3 sm:p-3">
+          <nav className="flex gap-2 overflow-x-auto border-b border-[#f1cf8a]/15 pb-2">
+            {folderNames.map((folder) => (
+              <button
+                key={folder}
+                className={`grid h-[58px] w-[58px] flex-none place-items-center rounded-sm outline-none transition sm:h-[66px] sm:w-[70px] ${
+                  folder === activeFolder
+                    ? "bg-[#e5b85d]/15 text-[#f5d182]"
+                    : "text-[#d7c5a3] hover:bg-white/5"
+                }`}
+                onClick={() => onFolderSelect(folder)}
+                title={folder}
+              >
+                <span
+                  className={`grid h-7 w-9 place-items-center rounded-[3px] border border-[#f1cf8a]/25 ${
+                    folder === activeFolder ? "bg-[#e5b85d]" : "bg-[#d6a84f]"
+                  } text-[10px] font-bold text-[#17110d] shadow-lg`}
+                >
+                  DIR
+                </span>
+                <span className="block max-w-full truncate px-1 text-[10px] leading-tight">
+                  {folder}
+                </span>
+              </button>
+            ))}
+          </nav>
 
-        <div className="grid min-w-0 grid-rows-[1fr_auto] gap-3 p-3">
-          <div className="grid auto-rows-[62px] grid-cols-2 gap-2 overflow-auto pr-1 sm:auto-rows-[74px] sm:grid-cols-3">
+          <div className="min-h-0 overflow-y-auto pr-1">
+            <div className="grid grid-cols-[repeat(auto-fill,minmax(64px,1fr))] gap-x-3 gap-y-4 sm:grid-cols-[repeat(auto-fill,minmax(82px,1fr))]">
             {folderMemories.map((memory) => (
               <button
                 key={memory.id}
-                className={`rounded-sm border p-2 text-left transition hover:-translate-y-0.5 ${
+                className={`grid min-w-0 justify-items-center rounded-sm p-1 text-center outline-none transition ${
                   selectedMemory?.id === memory.id
-                    ? "border-[#e5b85d] bg-[#e5b85d]/15"
-                    : "border-[#f1cf8a]/15 bg-black/25 hover:border-[#f1cf8a]/45"
+                    ? "bg-[#e5b85d]/15"
+                    : "hover:bg-white/5"
                 }`}
                 onClick={() => onMemoryOpen(memory)}
+                title={memory.title}
               >
-                <span className="mb-1 inline-flex rounded-sm bg-[#e5b85d] px-1.5 py-0.5 text-[10px] font-bold text-[#17110d]">
-                  {memory.icon}
+                <span
+                  className={`relative grid h-10 w-9 place-items-center rounded-[4px] border border-white/20 ${fileTypeStyles[memory.icon].bg} text-[9px] font-black text-[#17110d] shadow-lg sm:h-12 sm:w-11`}
+                >
+                  <span className="absolute right-0 top-0 h-3 w-3 rounded-bl-sm bg-white/50" />
+                  {fileTypeStyles[memory.icon].mark}
                 </span>
-                <span className="line-clamp-2 block text-xs font-semibold text-[#f8f2e7]">
+                <span
+                  className={`mt-1 block max-w-full overflow-hidden text-ellipsis whitespace-nowrap px-1 text-[10px] leading-tight ${fileTypeStyles[memory.icon].label}`}
+                >
                   {memory.title}
                 </span>
               </button>
             ))}
             {!folderMemories.length ? (
-              <div className="col-span-2 rounded-sm border border-dashed border-[#f1cf8a]/20 bg-black/20 p-3 text-xs leading-5 text-[#b8a98b] sm:col-span-3">
+              <div className="col-span-full rounded-sm border border-dashed border-[#f1cf8a]/20 bg-black/20 p-3 text-xs leading-5 text-[#b8a98b]">
                 Empty drawer. Move through time or pick another folder.
               </div>
             ) : null}
+            </div>
           </div>
 
-          <div className="min-h-[76px] rounded-sm border border-[#f1cf8a]/15 bg-black/30 p-3">
-            <p className="text-[10px] uppercase tracking-[0.22em] text-[#e5b85d]">
+          <div className="min-h-0 overflow-y-auto rounded-sm border border-[#f1cf8a]/15 bg-black/30 p-2 sm:p-3">
+            <p className="text-[9px] uppercase tracking-[0.2em] text-[#e5b85d] sm:text-[10px]">
               Selected file
             </p>
-            <p className="mt-1 line-clamp-2 text-sm text-[#f8f2e7]">
-              {selectedMemory?.clue ?? "Choose a file. Hardware in the room will react."}
+            <p className="mt-1 text-xs leading-5 text-[#f8f2e7] sm:text-sm">
+              {selectedMemory?.clue ??
+                "Choose a file. Hardware in the room will react."}
             </p>
           </div>
         </div>

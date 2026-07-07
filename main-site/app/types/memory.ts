@@ -4,6 +4,8 @@ export type RoomObjectId = "monitor" | "speakers" | "ipad" | "notebook" | "map";
 
 export type FolderName = "Music" | "Photos" | "Videos" | "Writing" | "Projects" | "Places";
 
+export type FileIcon = "APP" | "AUD" | "DOC" | "PIN" | "TXT" | "VID";
+
 export type MemoryObject = {
   id: string;
   title: string;
@@ -22,7 +24,7 @@ export type MemoryObject = {
     href: string;
     kind: "image" | "audio" | "video" | "external";
   };
-  icon: string;
+  icon: FileIcon;
   relationships: string[];
   revision: {
     version: string;
